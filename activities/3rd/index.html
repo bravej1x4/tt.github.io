@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/style.css">
+    <script type="module" src="/script.js"></script>
+    <title>3. CSS 선택자</title>
+
+    <style>
+
+        main{
+            min-height: 50vh;
+            padding: 52px;
+        }
+
+        #topWrapper{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 3rem 0 6rem;
+            border-bottom: 1px solid black;
+        }
+        #now_numberWrapper{
+            display: flex;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #now_numberEditPart{
+            display: flex;
+            align-items: center;
+            border: 1px solid black;
+            padding: 0 1ch;
+        }
+
+        #cursor{
+            width: 1px;
+            height: calc(1rem - 4px);
+            background-color: black;
+            /* border-radius: 50%; */
+            margin: 0 0.1ch;
+            animation: cursor-blink 1s infinite;
+        }
+
+        @keyframes cursor-blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #mainWrapper{
+            display: grid;
+            grid-template-columns: 1fr 1fr;  
+            padding: 52px 0;
+        }
+
+        #listWrapper{
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 0 52px;
+            font-weight: 500;
+        }
+
+        #listWrapper li{
+            padding: 1rem 0;
+            border-bottom: 1px solid black;
+        }
+
+
+
+        #controlWrapper{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        #controlWrapper button{
+            padding: 1rem;
+            font-size: 3vw;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/">
+            <h1 data-torph-title="table/table">t/t</h1>
+        </a>
+    </header>
+    <main>
+        <section id="topWrapper">
+            <div id="now_numberWrapper">
+                :nth-of-type(<div id="now_numberEditPart"><div id="now_number">0</div><div id="cursor"></div></div>) 
+            </div>
+        </section>
+        <section id="mainWrapper">
+            
+            <ol id="listWrapper">
+                <li>
+                    <span class="list-item" data-href="https://eeanzn.github.io/BoxBoxBox/">이현준의 BoxBoxBox</span>
+                </li>
+                <li>
+                    <span class="list-item" data-href="https://hyuk.xyz/selector/">장혁의 부엉이 선택자</span>
+                </li>
+                <li>
+                    <span class="list-item" data-href="https://versync.net/individual/where/index.html">정용기의 where</span>
+                </li>
+            </ol>
+
+            <aside id="controlWrapper">
+                <button id="button-1" value="1">1</button>
+                <button id="button-2" value="2">2</button>
+                <button id="button-3" value="3">3</button>
+                
+                <button id="button-4" value="4">4</button>
+                <button id="button-5" value="5">5</button>
+                <button id="button-6" value="6">6</button>
+
+                <button id="button-7" value="7">7</button>
+                <button id="button-8" value="8">8</button>
+                <button id="button-9" value="9">9</button>
+
+                <button id="button-remove" value="remove">←</button>
+                <button id="button-0" value="0">0</button>
+                <button id="button-enter" value="enter">Enter</button>
+            </aside>
+
+            
+        </section>
+    </main>
+    <script>
+        const nowNumber = document.querySelector("#now_number");
+        const items = document.querySelectorAll("#listWrapper li");
+
+        document.querySelector("#controlWrapper").addEventListener("click", (event) => {
+            const button = event.target.closest("button");
+            if (!button) return;
+
+            const value = button.value;
+
+            if (value === "remove") {
+                const next = nowNumber.textContent.slice(0, -1);
+                nowNumber.textContent = next === "" ? "0" : next;
+                return;
+            }
+
+            if (value === "enter") {
+                const index = Number(nowNumber.textContent);
+                const item = items[index - 1];
+                const href = item?.querySelector("[data-href]")?.dataset.href;
+                if (href) location.href = href;
+                return;
+            }
+
+            nowNumber.textContent = nowNumber.textContent === "0" ? value : nowNumber.textContent + value;
+        });
+    </script>
+    <footer>
+        <div class="footer-content">
+            <h6 class="footer-title" data-torph-title="table/table">
+                t/t
+            </h6>
+        </div>
+        <div class="footer-nav-content">
+            <div class="footer-nav-content-item">
+                <span class="footer-copyright">© 2026 t/t. All rights reserved.</span>
+                <nav class="footer-nav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="https://www.instagram.com/t_t_study/" target="_blank">Instagram</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
